@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PO & PR on ORACLE</title>
+    <!-- استدعاء خط Alex Brush -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .container h1 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            width: 100%;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        #inputText {
+            width: 380px;
+        }
+        .signature {
+            margin-top: 20px;
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.5em;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PO & PR on ORACLE</h1>
+        <div class="form-group">
+            <label for="option">Choose an Option:</label>
+            <select id="option" onchange="focusInput()">
+                <!--<option value="">Select an Option</option>-->
+                <option value="engineering">Engineering PO</option>
+                <option value="engineering-pr">Engineering PR</option>
+                <option value="service">Service</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="inputText">Enter number:</label>
+            <input type="text" id="inputText" placeholder="Ex:2678/24" onkeydown="handleEnter(event)">
+        </div>
+        <div class="form-group">
+            <button onclick="generateLink()">Open Link</button>
+        </div>
+    </div>
+
+    <!-- التوقيع بخط Alex Brush -->
+    <div class="signature">
+        <p>Ebrahim Mahmoud</p>
+    </div>
+
+    <script>
+        function generateLink() {
+            const option = document.getElementById('option').value;
+            const inputText = document.getElementById('inputText').value;
+
+            if (inputText.trim() === '') {
+                alert('Please enter text.');
+                return;
+            }
+
+            let baseUrl = '';
+
+            if (option === 'engineering') {
+                baseUrl = "http://192.168.100.11/IIS_WEB/Purchasing/po_local.php?org_id=1075&f_po=GRP-E_";
+            } else if (option === 'engineering-pr') {
+                baseUrl = "http://192.168.100.12/apps/04.Procurment/07.STOCKABLEITEMS/REP/GET_WO_VIEW_DATA.php?PRINT_WR_NO=";
+                document.getElementById("inputText").placeholder = "Ex:1814";
+            } else if (option === 'service') {
+                baseUrl = "http://192.168.100.12/apps/04.Procurment/04.SUPPLIERSERVICES/PROCESSES/PROCESSES/VIEW_DATA.php?PC=";
+                document.getElementById("inputText").placeholder = "Ex:1814";
+            } else {
+                alert('Please select a valid option.');
+                return;
+            }
+
+            const fullUrl = baseUrl + encodeURIComponent(inputText);
+            window.open(fullUrl, '_blank');
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                generateLink();
+            }
+        }
+
+        function focusInput() {
+            const inputField = document.getElementById('inputText');
+            inputField.focus();
+        }
+    </script>
+</body>
+</html>
